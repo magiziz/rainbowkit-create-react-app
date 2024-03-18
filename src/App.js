@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import {
+  ConnectButton,
+  RainbowKitProvider,
+  getDefaultConfig,
+} from "@rainbow-me/rainbowkit";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { mainnet, sepolia } from "wagmi/chains";
+import { WagmiProvider } from "wagmi";
 
-function App() {
+const queryClient = new QueryClient();
+
+const config = getDefaultConfig({
+  projectId: "YOUR_PROJECT_ID",
+  appName: "RainbowKit app",
+  chains: [mainnet, sepolia],
+});
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <RainbowKitProvider>
+          <ConnectButton />
+        </RainbowKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
   );
-}
-
+};
 export default App;
